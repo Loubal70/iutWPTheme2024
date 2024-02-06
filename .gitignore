@@ -9,3 +9,4 @@ vite.base.config.js
 vite.config.js
 vite.frontend.config.js
 yarn.lock
+node_modules
