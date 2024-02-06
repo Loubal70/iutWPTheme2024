@@ -1,0 +1,4 @@
+.testimonials .swiper-button-prev, .testimonials .swiper-button-next {
+   position: inherit;
+    @apply after:hidden w-auto h-auto mt-0;
+}

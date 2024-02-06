@@ -1,0 +1,71 @@
+{
+  "name": "iut-theme",
+  "version": "2.0.0",
+  "description": "Theme of the iut theme.",
+  "main": "main.js",
+  "scripts": {
+    "dev:frontend": "cross-env APP_ENV=development vite --host  --config vite.frontend.config.js",
+    "build:frontend": "APP_ENV=production vite build --config vite.frontend.config.js",
+    "build": "yarn build:frontend",
+    "build:production": "yarn build",
+    "dev": "npm-run-all --parallel dev:*",
+    "tailwind": "npx tailwindcss -i ./assets/css/app.css -o ./assets/css/output.css --watch",
+    "translate": "run-s -c translate:*",
+    "translate:pot": "find ./resources ./inc -iname \"*.php\" | xargs xgettext --add-comments=TRANSLATORS --force-po --from-code=UTF-8 --default-domain=fr_FR -k__ -k_e -k_n:1,2 -k_x:1,2c -k_ex:1,2c -k_nx:4c,12 -kesc_attr__ -kesc_attr_e -kesc_attr_x:1,2c -kesc_html__ -kesc_html_e -kesc_html_x:1,2c -k_n_noop:1,2 -k_nx_noop:3c,1,2, -k__ngettext_noop:1,2 -o languages/themosis.pot && find ./views -iname '*.blade.php' | xargs xgettext --language=Python --add-comments=TRANSLATORS --force-po --from-code=UTF-8 -k__ -k_e -k_n:1,2 -k_x:1,2c -k_ex:1,2c -k_nx:4c,12 -kesc_attr__ -kesc_attr_e -kesc_attr_x:1,2c -kesc_html__ -kesc_html_e -kesc_html_x:1,2c -k_n_noop:1,2 -k_nx_noop:3c,1,2, -k__ngettext_noop:1,2 -j -o languages/themosis.pot",
+    "translate:js": "wp i18n make-json ./languages --no-purge --pretty-print"
+  },
+  "author": "Themosis",
+  "license": "GPL-2.0-or-later",
+  "bugs": {
+    "url": "https://github.com/themosis/theme/issues"
+  },
+  "homepage": "https://github.com/themosis/theme#readme",
+  "devDependencies": {
+    "@_tw/themejson": "^0.1.2",
+    "@babel/plugin-transform-arrow-functions": "^7.20.7",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.0",
+    "@tailwindcss/typography": "^0.5.2",
+    "@vitejs/plugin-legacy": "^4.0.2",
+    "@vitejs/plugin-react": "^4.0.0",
+    "@wordpress/browserslist-config": "^5.14.0",
+    "@wordpress/eslint-plugin": "^17.0.0",
+    "alpinejs": "^3.9.1",
+    "autoprefixer": "^10.4.13",
+    "babel-preset-env": "^1.7.0",
+    "core-js": "^3.29.0",
+    "cross-env": "^7.0.3",
+    "exec-php": "^0.0.6",
+    "favicons": "^7.0.2",
+    "npm-run-all": "^4.1.5",
+    "motion": "^10.14.3",
+    "postcss": "^8.4.19",
+    "postcss-cli": "^10.0.0",
+    "postcss-import": "^15.0.0",
+    "postcss-nesting": "^12.0.1",
+    "postcss-preset-env": "^9.0.0",
+    "postcss-url": "^10.1.3",
+    "precss": "^4.0.0",
+    "prettier": "^3.0.0",
+    "stylelint": "^13.0.0",
+    "stylelint-config-wordpress": "^17.0.0",
+    "tailwindcss": "^3.3.2",
+    "terser": "^5.15.1",
+    "vite": "4.5.0",
+    "vite-plugin-live-reload": "^3.0.2",
+    "vite-plugin-mkcert": "^1.15.0"
+  },
+  "dependencies": {
+    "@alpinejs/intersect": "^3.13.0",
+    "dotenv": "^16.0.3",
+    "postcss-extend": "^1.0.5",
+    "swiper": "^11.0.0",
+    "tailwind-safelist-generator": "^1.0.0"
+  },
+  "browserslist": [
+    "extends @wordpress/browserslist-config"
+  ],
+  "volta": {
+    "node": "20.9.0"
+  }
+}

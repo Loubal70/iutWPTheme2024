@@ -1,0 +1,11 @@
+@import "../../node_modules/tailwindcss/base.css";
+@import "../../node_modules/tailwindcss/components.css";
+@import "../../node_modules/tailwindcss/utilities.css";
+
+@import "./common/fonts.css";
+@import "./common/heading.css";
+@import "./common/swiper.css";
+
+nav{
+    @apply bg-red-500;
+}
