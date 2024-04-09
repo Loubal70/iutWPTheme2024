@@ -9,3 +9,7 @@
 nav{
     @apply bg-red-500;
 }
+
+.image-100{
+    @apply w-full h-auto object-cover;
+}

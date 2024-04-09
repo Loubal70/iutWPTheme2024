@@ -3,7 +3,22 @@
     <main id="primary" class="site-main">
         <section class="max-w-5xl mx-auto flex flex-col lg:flex-row items-center lg:gap-x-10 my-20">
             <div class="lg:basis-2/4">
-                <h1 class="lg:w-3/4 mb-5">Find true power in your data with Ensome</h1>
+                <?php
+                    $title = get_field('frontpage_title');
+                ?>
+                <h1 class="lg:w-3/4 mb-5">
+                    <!-- Comment écrire un titre -->
+                    <?php //Commentaire PHP ?>
+                    <?= !empty($title) ? $title : 'Test' ?>
+
+                    <?php
+//                        if(!empty($title)){
+//                            echo $title;
+//                        } else {
+//                            echo "Test";
+//                        }
+                    ?>
+                </h1>
                 <p>
                     Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
                     totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
@@ -11,10 +26,19 @@
                 </p>
             </div>
             <div class="lg:basis-2/4">
-                <img src="<?= get_stylesheet_directory_uri() ?>/assets/img/001_illustration.png" alt="Hero image">
+                <?php
+                    $image = get_field('frontpage_image');
+                    // Comment vérifier l'id de mon image
+                    // die(var_dump($image));
+                    echo wp_get_attachment_image($image, 'full', false, ['class' => 'image-100'])
+                ?>
             </div>
         </section>
         <section class="bg-background py-20">
+            <?php
+                $services = get_field('cards');
+                die(print_r($services));
+            ?>
             <div class="mb-10 text-center">
                 <h2>Why our clients chosse Ensome?</h2>
                 <p class="max-w-md mx-auto">
