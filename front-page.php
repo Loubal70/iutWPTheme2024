@@ -3,18 +3,52 @@
     <main id="primary" class="site-main">
         <section class="max-w-5xl mx-auto flex flex-col lg:flex-row items-center lg:gap-x-10 my-20">
             <div class="lg:basis-2/4">
-                <h1 class="lg:w-3/4 mb-5">Find true power in your data with Ensome</h1>
+                <?php
+                    $title = get_field('titre_de_ma_section');
+                    $description = get_field('description_section');
+                    // Comment vérifier le contenu de ma variable
+//                    die(var_dump($title));
+                ?>
+                <h1 class="lg:w-3/4 mb-5">
+                    <?= !empty($title) ? $title : 'ko' ?>
+
+                    <?php
+                    // Autre exemple
+//                        if(!empty($title)) {
+//                            echo $title;
+//                        } else {
+//                            echo 'ko';
+//                        }
+                    ?>
+                </h1>
                 <p>
-                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-                    totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-                    dicta sunt explicabo.
+                    <?php // Troisième méthode pour appeler les variables ?>
+                    <?php if(!empty($description)) : ?>
+                        <?= $description ?>
+                    <?php else : ?>
+                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+                        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
+                        dicta sunt explicabo.
+                    <?php endif; ?>
                 </p>
             </div>
             <div class="lg:basis-2/4">
-                <img src="<?= get_stylesheet_directory_uri() ?>/assets/img/001_illustration.png" alt="Hero image">
+                <?php
+                    // Comment récupérer une image
+                    $imageId = get_field('image_de_ma_section');
+                    if(!empty($imageId) && is_int($imageId)){
+                        echo wp_get_attachment_image($imageId, 'full', false, ['class' => 'w-full']);
+                    }
+
+                ?>
+<!--                <img src="--><?php //= get_stylesheet_directory_uri() ?><!--/assets/img/001_illustration.png" alt="Hero image">-->
             </div>
         </section>
         <section class="bg-background py-20">
+            <?php
+                $cards = get_field('cards');
+//                die(var_dump($cards));
+            ?>
             <div class="mb-10 text-center">
                 <h2>Why our clients chosse Ensome?</h2>
                 <p class="max-w-md mx-auto">
@@ -40,17 +74,6 @@
                              class="w-8 h-8 object-contain" width="42" height="42" alt="Illustration">
                     </div>
                     <h3>Embed analytics</h3>
-                    <p>
-                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
-                        deleniti atque corrupti quos dolores.
-                    </p>
-                </div>
-                <div class="bg-white rounded-2xl drop-shadow-customcard px-8 py-10">
-                    <div class="inline-block border border-background rounded-xl p-3 mb-4">
-                        <img src="<?= get_stylesheet_directory_uri() ?>/assets/img/03_icon_key.png"
-                             class="w-8 h-8 object-contain" width="42" height="42" alt="Illustration">
-                    </div>
-                    <h3>Access control</h3>
                     <p>
                         At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
                         deleniti atque corrupti quos dolores.
