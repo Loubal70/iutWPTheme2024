@@ -189,3 +189,47 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+// Fonction pour créer le custom post type "Témoignage"
+function create_testimonial_post_type() {
+    // Labels pour le post type
+    $labels = array(
+        'name'               => 'Témoignages',
+        'singular_name'      => 'Témoignage',
+        'menu_name'          => 'Témoignages',
+        'add_new_item'       => 'Ajouter un témoignage',
+        'edit_item'          => 'Modifier le témoignage',
+        'new_item'           => 'Nouveau témoignage',
+        'view_item'          => 'Voir le témoignage',
+        'view_items'         => 'Voir les témoignages',
+        'search_items'       => 'Rechercher des témoignages',
+        'not_found'          => 'Aucun témoignage trouvé',
+        'not_found_in_trash' => 'Aucun témoignage trouvé dans la corbeille',
+    );
+
+    // Arguments pour le post type
+    $args = array(
+        'labels'              => $labels,
+        'description'         => 'Témoignages clients',
+        'public'              => true,
+        'menu_icon'           => 'dashicons-format-quote',
+        'menu_position'       => 5,
+        'supports'            => array('title', 'editor', 'thumbnail', 'excerpt'),
+        'has_archive'         => true,
+        'rewrite'             => array('slug' => 'temoignages'),
+    );
+
+    // Enregistrement du post type
+    register_post_type('testimonial', $args);
+
+    // Créé une taxonomy nommé "type" pour le post type "testimonial"
+    register_taxonomy( 'type', 'testimonial', [
+        'labels'        => array(
+            'name'                        => _x( 'Types', 'iut' ),
+            'singular_name'               => _x( 'Type', 'iut' ),
+            'menu_name'                   => __( 'Types', 'iut' ),
+        ),
+    ] );
+}
+
+// Hook pour appeler la fonction lors de l'initialisation de WordPress
+add_action('init', 'create_testimonial_post_type');

@@ -30,14 +30,14 @@
                     $image = get_field('frontpage_image');
                     // Comment vérifier l'id de mon image
                     // die(var_dump($image));
-                    echo wp_get_attachment_image($image, 'full', false, ['class' => 'image-100'])
+                    echo wp_get_attachment_image($image, 'full', false, ['class' => 'image-100']);
                 ?>
             </div>
         </section>
         <section class="bg-background py-20">
             <?php
                 $services = get_field('cards');
-                die(print_r($services));
+                //die(print_r($services));
             ?>
             <div class="mb-10 text-center">
                 <h2>Why our clients chosse Ensome?</h2>
@@ -47,41 +47,47 @@
                 </p>
             </div>
             <div class="max-w-5xl mx-auto grid lg:grid-cols-3 gap-4">
-                <div class="bg-white rounded-2xl drop-shadow-customcard px-8 py-10">
+                <?php foreach($services as $value): //die(var_dump($value)); ?>
+                    <div class="bg-white rounded-2xl drop-shadow-customcard px-8 py-10">
                     <div class="inline-block border border-background rounded-xl p-3 mb-4">
-                        <img src="<?= get_stylesheet_directory_uri() ?>/assets/img/01_icon_brain_circuit.png"
-                             class="w-8 h-8 object-contain" width="42" height="42" alt="Illustration">
+<!--                        <img src="--><?php //= get_stylesheet_directory_uri() ?><!--/assets/img/01_icon_brain_circuit.png"-->
+<!--                             class="w-8 h-8 object-contain" width="42" height="42" alt="Illustration">-->
+                        <?php
+                            echo wp_get_attachment_image($value['image'], 'full', false, ['class' => 'image-100']);
+                        ?>
                     </div>
-                    <h3>Machine learning</h3>
-                    <p>
-                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
-                        deleniti atque corrupti quos dolores.
-                    </p>
+                    <h3><?php echo $value['title']; ?></h3>
+                    <p><?php echo $value['description'] ?></p>
                 </div>
-                <div class="bg-white rounded-2xl drop-shadow-customcard px-8 py-10">
-                    <div class="inline-block border border-background rounded-xl p-3 mb-4">
-                        <img src="<?= get_stylesheet_directory_uri() ?>/assets/img/02_icon_arrow_trending_lines.png"
-                             class="w-8 h-8 object-contain" width="42" height="42" alt="Illustration">
-                    </div>
-                    <h3>Embed analytics</h3>
-                    <p>
-                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
-                        deleniti atque corrupti quos dolores.
-                    </p>
-                </div>
-                <div class="bg-white rounded-2xl drop-shadow-customcard px-8 py-10">
-                    <div class="inline-block border border-background rounded-xl p-3 mb-4">
-                        <img src="<?= get_stylesheet_directory_uri() ?>/assets/img/03_icon_key.png"
-                             class="w-8 h-8 object-contain" width="42" height="42" alt="Illustration">
-                    </div>
-                    <h3>Access control</h3>
-                    <p>
-                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
-                        deleniti atque corrupti quos dolores.
-                    </p>
-                </div>
+                <?php endforeach; ?>
             </div>
         </section>
+
+        <?php
+        $query = new WP_Query([
+            'post_type' => 'testimonial',
+            'posts_per_page' => 3,
+            'order' => 'DESC',
+            'orderby' => 'date',
+            'tax_query' => array(
+                // Première possibilité : Je recherche les témoignages qui ont un type égal à "test"
+                array (
+                    'taxonomy' => 'type',
+                    'field' => 'slug',
+                    'terms' => ['test', 'test1'],
+                ),
+                // Deuxième possibilité : Je recherche les témoignages qui n'ont pas de type
+//                    array (
+//                        'taxonomy' => 'type',
+//                        'operator' => 'NOT EXISTS'
+//                    )
+            ),
+        ]);
+
+        // Voir si j'ai des résultats
+        //            die(var_dump($query->posts));
+
+        ?>
 
         <section class="testimonials max-w-5xl mx-auto py-20">
             <div class="flex flex-col lg:flex-row justify-between mb-20">
@@ -102,51 +108,34 @@
             <div x-data="Testimonials" class="overflow-x-clip">
 
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide relative bg-white drop-shadow-customcard rounded-2xl p-8 pt-12">
-                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/001_img_person_1.png"
-                             class="absolute -top-7 left-7 w-14 h-14 object-cover rounded-full">
-                        <p class="mb-4">
-                            “Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam,
-                            nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea
-                            voluptate velit esse quam nihil molestiae consequatur, vel illum.”
-                        </p>
+                    <?php foreach ($query->posts as $testimony): //var_dump($testimony);
+                        $profession = get_field('profession', $testimony->ID);
+                    ?>
+                        <div class="swiper-slide relative bg-white drop-shadow-customcard rounded-2xl p-8 pt-12">
+<!--                            <img src="--><?php //echo get_stylesheet_directory_uri(); ?><!--/assets/img/001_img_person_1.png"-->
+<!--                                 class="absolute -top-7 left-7 w-14 h-14 object-cover rounded-full">-->
+                            <?php
+                                if(has_post_thumbnail($testimony->ID)){
+                                    echo get_the_post_thumbnail($testimony->ID, 'full', ['class' => 'image-100']);
+                                }
+                            ?>
+                            <p class="mb-4">
+                                <?php echo wp_trim_words($testimony->post_content, 55, '...'); ?>
+                            </p>
 
-                        <div>
-                            <span class="text-base block font-medium leading-none">Alex Bern</span>
-                            <span class="text-gray text-sm">CEO, Company</span>
+                            <div>
+                                <span class="text-base block font-medium leading-none">
+                                    <?php echo $testimony->post_title; ?>
+                                </span>
+                                <?php if(!empty($profession)): ?>
+                                    <span class="text-gray text-sm">
+                                        <?php echo $profession; ?>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+
                         </div>
-
-                    </div>
-                    <div class="swiper-slide relative bg-white drop-shadow-customcard rounded-2xl p-8 pt-12">
-                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/001_img_person_1.png"
-                             class="absolute -top-7 left-7 w-14 h-14 object-cover rounded-full">
-                        <p class="mb-4">
-                            “Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam,
-                            nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea
-                            voluptate velit esse quam nihil molestiae consequatur, vel illum.”
-                        </p>
-
-                        <div>
-                            <span class="text-base block font-medium leading-none">Alex Bern</span>
-                            <span class="text-gray text-sm">CEO, Company</span>
-                        </div>
-
-                    </div>
-                    <div class="swiper-slide relative bg-white drop-shadow-customcard rounded-2xl p-8 pt-12">
-                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/001_img_person_1.png"
-                             class="absolute -top-7 left-7 w-14 h-14 object-cover rounded-full">
-                        <p class="mb-4">
-                            “Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam,
-                            nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea
-                            voluptate velit esse quam nihil molestiae consequatur, vel illum.”
-                        </p>
-
-                        <div>
-                            <span class="text-base block font-medium leading-none">Alex Bern</span>
-                            <span class="text-gray text-sm">CEO, Company</span>
-                        </div>
-
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </section>
