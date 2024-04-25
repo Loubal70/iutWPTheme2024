@@ -9,6 +9,13 @@
  * @package iut
  */
 
+wp_nav_menu(
+    array(
+        'theme_location' => 'menu-footer',
+        'menu_id'        => 'footer-menu',
+    )
+);
+
 ?>
 
 	<footer id="colophon" class="site-footer">
