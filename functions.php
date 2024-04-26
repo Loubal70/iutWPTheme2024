@@ -50,6 +50,7 @@ function iut_setup() {
 	register_nav_menus(
 		array(
 			'menu-1' => esc_html__( 'Primary', 'iut' ),
+			'menu-footer' => esc_html__( 'Pied de page', 'iut' ),
 		)
 	);
 
@@ -189,3 +190,132 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+// Fonction pour créer le custom post type "Témoignage"
+function create_testimonial_post_type() {
+    // Labels pour le post type
+    $labels = array(
+        'name'               => 'Témoignages',
+        'singular_name'      => 'Témoignage',
+        'menu_name'          => 'Témoignages',
+        'add_new_item'       => 'Ajouter un témoignage',
+        'edit_item'          => 'Modifier le témoignage',
+        'new_item'           => 'Nouveau témoignage',
+        'view_item'          => 'Voir le témoignage',
+        'view_items'         => 'Voir les témoignages',
+        'search_items'       => 'Rechercher des témoignages',
+        'not_found'          => 'Aucun témoignage trouvé',
+        'not_found_in_trash' => 'Aucun témoignage trouvé dans la corbeille',
+    );
+
+    // Arguments pour le post type
+    $args = array(
+        'labels'              => $labels,
+        'description'         => 'Témoignages clients',
+        'public'              => true,
+        'menu_icon'           => 'dashicons-format-quote',
+        'menu_position'       => 5,
+        'supports'            => array('title', 'editor', 'thumbnail', 'excerpt'),
+        'has_archive'         => true,
+        'rewrite'             => array('slug' => 'temoignages'),
+    );
+
+    // Enregistrement du post type
+    register_post_type('testimonial', $args);
+
+    // Créé une taxonomy nommé "type" pour le post type "testimonial"
+    register_taxonomy( 'type', 'testimonial', [
+        'labels'        => array(
+            'name'                        => _x( 'Types', 'iut' ),
+            'singular_name'               => _x( 'Type', 'iut' ),
+            'menu_name'                   => __( 'Types', 'iut' ),
+        ),
+    ] );
+}
+
+// Hook pour appeler la fonction lors de l'initialisation de WordPress
+add_action('init', 'create_testimonial_post_type');
+
+// Fonction pour créer le custom post type "Témoignage"
+function create_services_post_type() {
+    // Labels pour le post type
+    $labels = array(
+        'name'               => 'Services',
+        'singular_name'      => 'Service',
+        'menu_name'          => 'Services',
+        'add_new'            => 'Ajouter un service',
+        'add_new_item'       => 'Ajouter un service',
+        'edit_item'          => 'Modifier le service',
+        'new_item'           => 'Nouveau service',
+        'view_item'          => 'Voir le service',
+        'view_items'         => 'Voir les services',
+        'search_items'       => 'Rechercher des services',
+        'not_found'          => 'Aucun service trouvé',
+        'not_found_in_trash' => 'Aucun service trouvé dans la corbeille',
+    );
+
+    // Arguments pour le post type
+    $args = array(
+        'label'               => 'Services',
+        'labels'              => $labels,
+        'description'         => 'Services',
+        'public'              => true,
+        'menu_icon'           => 'dashicons-menu',
+        'menu_position'       => 6,
+        'supports'            => array('title', 'editor', 'thumbnail', 'excerpt'),
+        'has_archive'         => true,
+        'rewrite'             => array('slug' => 'services'),
+    );
+
+    // Enregistrement du post type
+    register_post_type('services', $args);
+}
+
+// Hook pour appeler la fonction lors de l'initialisation de WordPress
+add_action('init', 'create_services_post_type');
+
+
+// Create a custom post type for courses
+function create_courses_post_type() {
+    // Labels pour le post type
+    $labels = array(
+        'name'               => 'Cours',
+        'singular_name'      => 'Cours',
+        'menu_name'          => 'Cours',
+        'add_new'            => 'Ajouter un cours',
+        'add_new_item'       => 'Ajouter un cours',
+        'edit_item'          => 'Modifier le cours',
+        'new_item'           => 'Nouveau cours',
+        'view_item'          => 'Voir le cours',
+        'view_items'         => 'Voir les cours',
+        'search_items'       => 'Rechercher des cours',
+        'not_found'          => 'Aucun cours trouvé',
+        'not_found_in_trash' => 'Aucun cours trouvé dans la corbeille',
+    );
+
+    // Arguments pour le post type
+    $args = array(
+        'label'               => 'Cours',
+        'labels'              => $labels,
+        'description'         => 'CPT Cours',
+        'public'              => true,
+        'menu_icon'           => 'dashicons-welcome-learn-more',
+        'menu_position'       => 6,
+        'supports'            => array('title', 'editor', 'thumbnail', 'excerpt'),
+        'has_archive'         => true,
+        'rewrite'             => array('slug' => 'cours'),
+    );
+
+    // Enregistrement du post type
+    register_post_type('cours', $args);
+
+    register_taxonomy( 'courses_cat', 'cours', [
+        'labels'        => array(
+            'name'                        => _x( 'Catégories de cours', 'iut' ),
+            'singular_name'               => _x( 'Catégorie de cours', 'iut' ),
+            'menu_name'                   => __( 'Catégorie de cours', 'iut' ),
+        ),
+    ] );
+}
+
+// Hook pour appeler la fonction lors de l'initialisation de WordPress
+add_action('init', 'create_courses_post_type');
